@@ -1,18 +1,23 @@
 import { test } from '@playwright/test';
-import { homePage } from '../../page-functions/home/home-page';
-import { addBetPage } from '../../page-functions/add-bet/add-bet-page';
+import { HomePage } from '../../page-objects/home/home';
+import { AddBetPage } from '../../page-objects/add-bet/add-bet';
+
 test.describe('Verify add bets feature using a device width of 420 px', () => {
+  let homePage: HomePage;
+  let addBetPage: AddBetPage;
   test.beforeEach(async ({ page }) => {
-    await homePage().navigateToHomePage(page, process.env.HOSTNAME!, '');
-    const selectedRaceCardName = await homePage().selectRaceCardFromGroupOne(page, 1);
+    homePage = new HomePage(page);
+    await homePage.navigateToHomePage();
+    const selectedRaceCardName = await homePage.selectRaceCardFromGroupOne(1);
+    addBetPage = new AddBetPage(page);
     if (typeof selectedRaceCardName === 'string') {
-      await addBetPage().verifySelectedRaceCard(page, selectedRaceCardName);
+      await addBetPage.verifySelectedRaceCard(selectedRaceCardName);
     } else throw new Error(`Invalid race card ${selectedRaceCardName}`);
   });
-  test(' @addBet add two unique bets and verify if added correctly', async ({ page }) => {
-    await addBetPage().addRaceCardOutcomeAndVerifyOnBetSlip(page, 2);
+  test(' @addBet add two unique bets and verify if added correctly', async () => {
+    await addBetPage.addRaceCardOutcomeAndVerifyOnBetSlip(2);
   });
-  test(' @test add race card outcome and verify bet count', async ({ page }) => {
-    await addBetPage().verifyBetCountOnBetSlip(page, 2);
+  test(' @addBet add race card outcome and verify bet count', async () => {
+    await addBetPage.verifyBetCountOnBetSlip(2);
   });
 });
