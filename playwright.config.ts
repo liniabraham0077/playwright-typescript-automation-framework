@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 import * as dotenv from 'dotenv';
-import { PageUtils } from './tests/utils/page-utils';
+import { pageUtils } from './tests/utils/page-utils';
 
 /**
  * Read environment variables from file.
@@ -48,10 +48,9 @@ export default defineConfig({
     {
       name: 'chromium',
       use: {
-        testIdAttribute: 'data-automation-id',
         ...devices['Desktop Chrome'],
         viewport: { width: parseInt(process.env.SCREEN_WIDTH!), height: parseInt(process.env.SCREEN_HEIGHT!) },
-        headless: PageUtils.parseStringToBoolean(process.env.HEADLESS!),
+        headless: pageUtils().parseStringToBoolean(process.env.HEADLESS!),
         ignoreHTTPSErrors: true,
         acceptDownloads: true,
       },
@@ -63,7 +62,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Firefox'],
         viewport: { width: parseInt(process.env.SCREEN_WIDTH!), height: parseInt(process.env.SCREEN_HEIGHT!) },
-        headless: PageUtils.parseStringToBoolean(process.env.HEADLESS!),
+        headless: pageUtils().parseStringToBoolean(process.env.HEADLESS!),
         ignoreHTTPSErrors: true,
         acceptDownloads: true,
       },
@@ -75,7 +74,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Safari'],
         viewport: { width: parseInt(process.env.SCREEN_WIDTH!), height: parseInt(process.env.SCREEN_HEIGHT!) },
-        headless: PageUtils.parseStringToBoolean(process.env.HEADLESS!),
+        headless: pageUtils().parseStringToBoolean(process.env.HEADLESS!),
         ignoreHTTPSErrors: true,
         acceptDownloads: true,
       },
